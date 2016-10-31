@@ -1,77 +1,81 @@
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<style>
-.form-group {
-    clear: both;
-}
-</style>
 <?php
-if(isset($_POST['submit'])){
-	$today = date('m-d-Y');
-	$timestamp = time() - date('Z');
 
-	//collect form data
-	$traffick_drop_down = $_POST["traffick-drop-down"];
-	$photo = basename($_FILES["photo"]["name"]);
-	$trafficker_name = $_POST["trafficker-name"];
-	$alias_nickname = $_POST["alias-nickname"];
-	$height = $_POST["height"];
-	$weight = $_POST["weight"];
-	$approximate_age = $_POST["approximate-age"];
-	$home_or_work_address = $_POST["home-or-work-address"];
-	$city = $_POST["city"];
-	$state = $_POST["state"];
-	$gender = $_POST["gender"];
-	$hair_color = $_POST["hair-color"];
-	$phone_number = $_POST["phone-number"];
-	$email_address = $_POST["email-address"];
-	$facebook_link = $_POST["facebook-link"];
-	$instagram_link = $_POST["instagram-link"];
-	$twitter_link = $_POST["twitter-link"];
-	$other = $_POST["other"];
-	$physical_characteristics = $_POST["physical-characteristics"];
-	$vehicle_license_plate = $_POST["vehicle-license-plate"];
-	$vehicle_type = $_POST["vehicle-type"];
-	$vehicle_color = $_POST["vehicle-color"];
-	$additional_comments = $_POST["additional-comments"];
-	$what_room_or_location_did_activity_occur_in = $_POST["what-room-or-location-did-activity-occur-in"];
-	$how_did_trafficker_victim_and_customer_all_communicate_with_each_other = $_POST["how-did-trafficker-victim-and-customer-all-communicate-with-each-other"];
-	$provide_all_information_asw_that_room = $_POST["provide-all-information-asw-that-room"];
-	$what_other_locations_are_used_by_trafficker_and_victim = $_POST["what-other-locations-are-used-by-trafficker-and-victim"];
-	$what_kind_of_activity_occurred = $_POST["what-kind-of-activity-occurred"];
-	$how_did_the_customer_arrive = $_POST["how-did-the-customer-arrive"];
-	$what_time_and_day_did_activity_occur = $_POST["what-time-and-day-did-activity-occur"];
-	$who_picks_up_victim_after_activity_concludes = $_POST["who-picks-up-victim-after-activity-concludes"];
-	$how_many_victimsescorts_per_trafficker = $_POST["how-many-victimsescorts-per-trafficker"];
-	$how_did_victim_andor_trafficker_arrive = $_POST["how-did-victim-andor-trafficker-arrive"];
-	$what_frequency_does_activity_take_place_at_this_location = $_POST["what-frequency-does-activity-take-place-at-this-location"];
-	$how_are_transactions_asw_activity_recorded = $_POST["how-are-transactions-asw-activity-recorded"];
-	$how_long_does_activity_typically_occur = $_POST["how-long-does-activity-typically-occur"];
-	$how_many_transactions_per_day_for_escort = $_POST["how-many-transactions-per-day-for-escort"];
+/*
+ * Plugin Name: Guardian Group Questionair
+ * Plugin URI: 
+ * Description: This plugin creates a shortcode to embed a questionair form. [gg_questionair]
+ * Version: 1.0.0
+ * Author: Christopher Grove
+ * Author URI: 
+ * License: GPL v2+
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: gg-questionair
+ * Domain Path: 
+ */
+ 
+ function save_to_pdf(){
+	if(isset($_POST['submit'])){
+		//Set date and unix timestamp to create uniquely name files
+		$today = date('m-d-Y');
+		$timestamp = time() - date('Z');
+		
+		//get the plugins directory
+		$plugins_url = __DIR__;
+		
+		//Sets the uploads directory of uploaded image files and moves them there
+		$target_file = $plugins_url . "/uploads/" . $timestamp . basename($_FILES["photo"]["name"]);
+		move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file);
 
+		//Used to generate a dynamic URL to view the uploaded file. This is a link in the pdf
+		$uploaded_file = "uploads/" . $timestamp . basename($_FILES["photo"]["name"]);
+		$uploaded_directory = $_SERVER['DOCUMENT_ROOT'].'/'.$uploaded_file;
+		
+		//collect form data
+		$traffick_drop_down = $_POST["traffick-drop-down"];
+		$photo = basename($_FILES["photo"]["name"]);
+		$trafficker_name = $_POST["trafficker-name"];
+		$alias_nickname = $_POST["alias-nickname"];
+		$height = $_POST["height"];
+		$weight = $_POST["weight"];
+		$approximate_age = $_POST["approximate-age"];
+		$home_or_work_address = $_POST["home-or-work-address"];
+		$city = $_POST["city"];
+		$state = $_POST["state"];
+		$gender = $_POST["gender"];
+		$hair_color = $_POST["hair-color"];
+		$phone_number = $_POST["phone-number"];
+		$email_address = $_POST["email-address"];
+		$facebook_link = $_POST["facebook-link"];
+		$instagram_link = $_POST["instagram-link"];
+		$twitter_link = $_POST["twitter-link"];
+		$other = $_POST["other"];
+		$physical_characteristics = $_POST["physical-characteristics"];
+		$vehicle_license_plate = $_POST["vehicle-license-plate"];
+		$vehicle_type = $_POST["vehicle-type"];
+		$vehicle_color = $_POST["vehicle-color"];
+		$additional_comments = $_POST["additional-comments"];
+		$what_room_or_location_did_activity_occur_in = $_POST["what-room-or-location-did-activity-occur-in"];
+		$how_did_trafficker_victim_and_customer_all_communicate_with_each_other = $_POST["how-did-trafficker-victim-and-customer-all-communicate-with-each-other"];
+		$provide_all_information_asw_that_room = $_POST["provide-all-information-asw-that-room"];
+		$what_other_locations_are_used_by_trafficker_and_victim = $_POST["what-other-locations-are-used-by-trafficker-and-victim"];
+		$what_kind_of_activity_occurred = $_POST["what-kind-of-activity-occurred"];
+		$how_did_the_customer_arrive = $_POST["how-did-the-customer-arrive"];
+		$what_time_and_day_did_activity_occur = $_POST["what-time-and-day-did-activity-occur"];
+		$who_picks_up_victim_after_activity_concludes = $_POST["who-picks-up-victim-after-activity-concludes"];
+		$how_many_victimsescorts_per_trafficker = $_POST["how-many-victimsescorts-per-trafficker"];
+		$how_did_victim_andor_trafficker_arrive = $_POST["how-did-victim-andor-trafficker-arrive"];
+		$what_frequency_does_activity_take_place_at_this_location = $_POST["what-frequency-does-activity-take-place-at-this-location"];
+		$how_are_transactions_asw_activity_recorded = $_POST["how-are-transactions-asw-activity-recorded"];
+		$how_long_does_activity_typically_occur = $_POST["how-long-does-activity-typically-occur"];
+		$how_many_transactions_per_day_for_escort = $_POST["how-many-transactions-per-day-for-escort"];
 
-	//Sets the uploads directory of uploaded files and moves them there
-	$target_file = "uploads/" . $timestamp . basename($_FILES["photo"]["name"]);
-	move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file);
-
-	//Used to generate a dynamic URL to view the uploaded file
-	$uploaded_directory = $_SERVER['DOCUMENT_ROOT'].'/'.$target_file;
-
-
-        //create html of the data
-        ob_start();
-        ?>
+		//create html of the data
+		ob_start();
+		?>
 
 		<!-- Print out Data in pdf format -->
-        <h1>Data from form</h1>
-        <p><strong>Individual:</strong> <?php echo $traffick_drop_down;?></p>
+		<h1>Data from form</h1>
+		<p><strong>Individual:</strong> <?php echo $traffick_drop_down;?></p>
 		<!-- Checks to see if an image was uploaded. If not then do not display link -->
 		<?php if($photo){ ?>
 			<p><strong>File:</strong> <a href="<?php echo $uploaded_directory;?>">View</a></p>
@@ -115,35 +119,57 @@ if(isset($_POST['submit'])){
 		<p><strong>How many transactions per day for escort?:</strong> <?php echo $how_many_transactions_per_day_for_escort;?></p>
 
 
-        <?php 
-        $body = ob_get_clean();
+		<?php 
+		$body = ob_get_clean();
 
-        $body = iconv("UTF-8","UTF-8//IGNORE",$body);
+		$body = iconv("UTF-8","UTF-8//IGNORE",$body);
 
-        require_once __DIR__ . '/vendor/autoload.php';
+		require_once __DIR__ . '/vendor/autoload.php';
 		
-        $mpdf=new \mPDF('c','A4','','' , 0, 0, 0, 0, 0, 0); 
+		$mpdf=new \mPDF('c','A4','','' , 0, 0, 0, 0, 0, 0); 
 
-        //write html to PDF
-        $mpdf->WriteHTML($body);
+		//write html to PDF
+		$mpdf->WriteHTML($body);
  
-        //output pdf
-        //$mpdf->Output('demo.pdf','D');
+		//output pdf
+		//$mpdf->Output('demo.pdf','D');
 
-        //open in browser
-        //$mpdf->Output();
+		//open in browser
+		//$mpdf->Output();
 
-        //save to server
-		$save_pdf = $today.' '.$timestamp.'.pdf';
-		$uploads = $_SERVER['DOCUMENT_ROOT']."/uploads/";
-        $mpdf->Output($save_pdf,'F');
+		//save to server
+		$save_pdf = $plugins_url . '/uploads/' . $today . ' ' . $timestamp . '.pdf';
+		$mpdf->Output($save_pdf,'F');
 
-    
-}
+		
+	}
+ }
+add_action( 'admin_post_nopriv_sapphire_submit', 'save_to_pdf' );
+add_action( 'admin_post_sapphire_submit', 'save_to_pdf' );
+
+
+add_shortcode( 'gg_questionair', 'gg_embed_form' );
+function gg_embed_form( $atts ) {
 ?> 
 
-<form action='' method='post' enctype="multipart/form-data">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<style>
+.form-group {
+    clear: both;
+}
+</style>
+
+
+<form action='' method='post' enctype="multipart/form-data">
+<input type="hidden" name="action" value="sapphire_submit">
 <fieldset>
 
 <!-- Form Name -->
@@ -488,3 +514,4 @@ if(isset($_POST['submit'])){
 
 </fieldset>
 </form>
+<?php } ?>

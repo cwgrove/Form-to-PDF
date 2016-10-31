@@ -1,0 +1,1 @@
+Directory used to store uploaded images from form
