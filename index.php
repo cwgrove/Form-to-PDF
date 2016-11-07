@@ -14,6 +14,12 @@
  */
  
  function save_to_pdf(){
+	 
+	 //$a = $_POST;
+	 
+	
+	// print_r($a);
+	 
 	if(isset($_POST['submit'])){
 		//Set date and unix timestamp to create uniquely name files
 		$today = date('m-d-Y');
@@ -28,7 +34,8 @@
 
 		//Used to generate a dynamic URL to view the uploaded file. This is a link in the pdf
 		$uploaded_file = "uploads/" . $timestamp . basename($_FILES["photo"]["name"]);
-		$uploaded_directory = $_SERVER['DOCUMENT_ROOT'].'/'.$uploaded_file;
+		//$uploaded_directory = $_SERVER['DOCUMENT_ROOT'].'/'.$uploaded_file;
+		$uploaded_directory = site_url().'/wp-content/plugins/form-to-pdf-master/'.$uploaded_file;
 		
 		//collect form data
 		$traffick_drop_down = $_POST["traffick-drop-down"];
@@ -141,9 +148,11 @@
 		$save_pdf = $plugins_url . '/uploads/' . $today . ' ' . $timestamp . '.pdf';
 		$mpdf->Output($save_pdf,'F');
 
+echo "<p>This will be a thank you page<br/> The report will be emailed to you.<br/> 
+You can view it <a href='".site_url()."/wp-content/plugins/form-to-pdf-master/uploads/". $today . ' ' . $timestamp . ".pdf'>here</a></p>";
 		
 	}
- }
+}
 add_action( 'admin_post_nopriv_sapphire_submit', 'save_to_pdf' );
 add_action( 'admin_post_sapphire_submit', 'save_to_pdf' );
 
@@ -168,7 +177,7 @@ function gg_embed_form( $atts ) {
 </style>
 
 
-<form action='' method='post' enctype="multipart/form-data">
+<form action='/wp-admin/admin-post.php' method='post' enctype="multipart/form-data">
 <input type="hidden" name="action" value="sapphire_submit">
 <fieldset>
 
